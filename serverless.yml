@@ -1,15 +1,19 @@
 service:
-  name: aws-alexa-typescript-5
+  name: aws-alexa-typescript
 
 plugins:
   - serverless-webpack
   - serverless-alexa-skills
+  - serverless-iam-roles-per-function
 provider:
   name: aws
   runtime: nodejs8.10
-  cfnRole: arn:aws:iam::353575416729:role/ServerlessCloudFormationRole
+  cfnRole: arn:aws:iam::${env:AMAZON_ACCOUNT_ID}:role/ServerlessCloudFormationRole
 
 custom:
+  stage: ${opt:stage, self:provider.stage}
+  region: ${opt:region, self:provider.region}
+  skillname: Serverless Alexa Typescript
   alexa:
     vendorId: ${env:AMAZON_VENDOR_ID}
     clientId: ${env:AMAZON_CLIENT_ID}
@@ -24,13 +28,13 @@ custom:
           publishingInformation:
             locales:
               en-GB:
-                name: Serverless Alexa Typescript
+                name: ${self:custom.skillname}-${self:custom.stage}
           apis:
             custom:
               endpoint:
                 # Step 4: Do your first deploy of your Serverless stack
                 # Step 5: Paste the ARN of your lambda here:
-                uri: arn:aws:lambda:us-east-1:353575416729:function:aws-alexa-typescript-5-dev-alexa
+                uri: arn:aws:lambda:${self:custom.region}:${env:AMAZON_ACCOUNT_ID}:function:${self:service.name}-${self:custom.stage}-alexa
                 # Step 6: Run `sls alexa update` to deploy the skill manifest
                 # Step 7: Run `sls alexa build` to build the skill interaction model
                 # Step 8: Enable the skill in the Alexa app to start testing.
@@ -50,3 +54,9 @@ functions:
     handler: handler.alexa
     events:
       - alexaSkill: ${self:custom.alexa.skills.0.id}
+    iamRoleStatementsName: 
+      - Effect: "Allow"
+        Action: 
+          - "logs:CreateLogStream"
+          - "logs:PutLogEvents"
+        Resource: "*"

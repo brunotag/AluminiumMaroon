@@ -4,14 +4,18 @@
   "description": "Alexa example using Typescript",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "decrypt": "file-encryptor decrypt setup-build-env.bat.enc",
+    "encrypt": "file-encryptor encrypt setup-build-env.bat"
   },
   "dependencies": {
     "ask-sdk": "^2.0.7"
   },
   "devDependencies": {
     "@types/node": "^8.0.57",
+    "file-encryptor-cli": "^1.0.7",
     "serverless-alexa-skills": "^0.1.0",
+    "serverless-iam-roles-per-function": "^1.0.4",
     "serverless-webpack": "^5.1.1",
     "source-map-support": "^0.5.6",
     "ts-loader": "^4.2.0",
