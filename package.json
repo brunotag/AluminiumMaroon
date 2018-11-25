@@ -6,7 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "decrypt": "file-encryptor decrypt setup-build-env.bat.enc",
-    "encrypt": "file-encryptor encrypt setup-build-env.bat"
+    "encrypt": "file-encryptor encrypt setup-build-env.bat",
+    "deploy": "npm run auth-deploy & npm run deploy-skill & npm run deploy-lambda",
+    "auth-deploy": "sls alexa auth",
+    "deploy-skill": "sls alexa update & sls alexa build",
+    "deploy-lambda": "sls deploy"
   },
   "dependencies": {
     "ask-sdk": "^2.0.7"

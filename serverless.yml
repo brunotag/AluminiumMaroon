@@ -11,44 +11,70 @@ provider:
   cfnRole: arn:aws:iam::${env:AMAZON_ACCOUNT_ID}:role/ServerlessCloudFormationRole
 
 custom:
-  stage: ${opt:stage, self:provider.stage}
+  stage: ${opt:stage, self:provider.stage}  
   region: ${opt:region, self:provider.region}
-  skillname: Serverless Alexa Typescript
+  environment:
+    dev:
+      skill: 
+        id: amzn1.ask.skill.921a3662-434d-4743-a078-26a82d248e8d
+        englishLanguageModel:
+          invocationName: serverless typescript
+          intents:
+            - name: HelloIntent
+              samples:
+                - 'yo bro'
+    prod:
+      skill:
+        id: amzn1.ask.skill.454e193b-7bc9-4637-a3a5-7f16f230730c
+        englishLanguageModel:
+          invocationName: serverless typescript
+          intents:
+            - name: HelloIntent
+              samples:
+                - 'hello'
   alexa:
     vendorId: ${env:AMAZON_VENDOR_ID}
     clientId: ${env:AMAZON_CLIENT_ID}
     clientSecret: ${env:AMAZON_CLIENT_SECRET}
     localServerPort: 9090
-    # Step 1: Run `sls alexa auth` to authenticate
-    # Step 2: Run `sls alexa create --name "Serverless Alexa Typescript" --locale en-GB --type custom` to create a new skill
     skills:
-        # Step 3: Paste the skill id returned by the create command here:
-      - id: amzn1.ask.skill.5a98e0af-432a-403b-8946-6d9316a33af7
+      - id: ${self:custom.environment.${self:custom.stage}.skill.id}
         manifest:
           publishingInformation:
             locales:
               en-GB:
-                name: ${self:custom.skillname}-${self:custom.stage}
+                name: "My Alexa Skill"
+              en-US:
+                name: "My Alexa Skill"
+              en-CA:
+                name: "My Alexa Skill"
+              en-AU:
+                name: "My Alexa Skill"
+              en-IN:
+                name: "My Alexa Skill"
+              de-DE:
+                name: "Meine Alexa-Fahigkeit"
           apis:
             custom:
               endpoint:
-                # Step 4: Do your first deploy of your Serverless stack
-                # Step 5: Paste the ARN of your lambda here:
                 uri: arn:aws:lambda:${self:custom.region}:${env:AMAZON_ACCOUNT_ID}:function:${self:service.name}-${self:custom.stage}-alexa
-                # Step 6: Run `sls alexa update` to deploy the skill manifest
-                # Step 7: Run `sls alexa build` to build the skill interaction model
-                # Step 8: Enable the skill in the Alexa app to start testing.
           manifestVersion: '1.0'
         models:
           en-GB:
             interactionModel:
-              languageModel:
-                invocationName: serverless typescript
-                intents:
-                  - name: HelloIntent
-                    samples:
-                      - 'hello'
-
+              languageModel: ${self:custom.environment.${self:custom.stage}.skill.englishLanguageModel}
+          en-US:
+            interactionModel:
+              languageModel: ${self:custom.environment.${self:custom.stage}.skill.englishLanguageModel}
+          en-CA:
+            interactionModel:
+              languageModel: ${self:custom.environment.${self:custom.stage}.skill.englishLanguageModel}
+          en-AU:
+            interactionModel:
+              languageModel: ${self:custom.environment.${self:custom.stage}.skill.englishLanguageModel}
+          en-IN:
+            interactionModel:
+              languageModel: ${self:custom.environment.${self:custom.stage}.skill.englishLanguageModel}
 functions:
   alexa:
     handler: handler.alexa
