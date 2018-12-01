@@ -10,3 +10,6 @@ jspm_packages
 
 # build setup script
 setup-build-env.bat
+
+# compiled for local debug directories
+.debug

@@ -1,0 +1,20 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["eslint:recommended"],
+  "env": {
+    "browser": false,
+    "node": true
+  },
+  "plugins": [
+    "mocha"
+  ],
+  "rules": {
+    "no-console": "off",
+    "comma-dangle": "off",
+    "mocha/no-exclusive-tests": "error",
+    "semi": ["error", "always"],
+    "brace-style": ["error", "stroustrup"],
+    "indent": ["error", 2],
+    "no-trailing-spaces": ["error"]
+  }
+}

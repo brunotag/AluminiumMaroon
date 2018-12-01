@@ -1,0 +1,13 @@
+// Request or Response interceptor template
+// const interceptor = {
+//   process (handlerInput) {
+//     return new Promise((resolve, reject) => {
+//       // Set up request attributes or other logic.
+//       try {
+//         resolve();
+//       } catch (error) {
+//         reject(error);
+//       }
+//     });
+//   }
+// };
